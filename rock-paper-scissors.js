@@ -15,19 +15,6 @@ function getHumanChoice () {
 
 // console.log(getHumanChoice());
 
-let humanScore = 0;
-let computerScore = 0;
-
-// console.log(humanScore);
-// console.log(computerScore);
-
-function playRound (humanChoice, computerChoice) {
-    let winner = determineWinner(humanChoice, computerChoice);
-    printRoundResult(winner, humanChoice, computerChoice);
-    if (winner == "human") humanScore++;
-    if (winner == "computer") computerScore++;
-}
-
 function determineWinner (humanChoice, computerChoice) {
     let winner;
         switch (humanChoice) {
@@ -65,3 +52,26 @@ function printRoundResult (winner, humanChoice, computerChoice) {
         case "computer": console.log(`You lose. ${computerChoice[0].toUpperCase() + computerChoice.slice(1)} beats ${humanChoice}.`); break;
     }
 }
+
+function playGame() {
+    let humanScore = 0;
+    let computerScore = 0;
+
+    function playRound (humanChoice, computerChoice) {
+        let winner = determineWinner(humanChoice, computerChoice);
+        printRoundResult(winner, humanChoice, computerChoice);
+        if (winner == "human") humanScore++;
+        if (winner == "computer") computerScore++;
+    }
+
+    for(let i = 1; i <= 5; i++) playRound(getHumanChoice(), getComputerChoice());
+
+    let scoreMessage = "";
+    if (humanScore > computerScore) scoreMessage += "You win!";
+    else if (computerScore > humanScore) scoreMessage += "You lose.";
+    else scoreMessage += "It's a draw."
+    scoreMessage += ` Your score: ${humanScore}. Computer's score: ${computerScore}.`;
+    console.log(scoreMessage);
+}
+
+playGame();
