@@ -53,7 +53,7 @@ function printRoundResult (winner, humanChoice, computerChoice) {
     }
 }
 
-function playGame() {
+function playGame () {
     let humanScore = 0;
     let computerScore = 0;
 
