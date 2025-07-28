@@ -47,31 +47,29 @@ function determineWinner (humanChoice, computerChoice) {
 
 function printRoundResult (winner, humanChoice, computerChoice) {
     switch (winner) {
-        case "draw": console.log("It's a draw. You both picked", humanChoice); break;
-        case "human": console.log(`You win! ${humanChoice[0].toUpperCase() + humanChoice.slice(1)} beats ${computerChoice}.`); break;
-        case "computer": console.log(`You lose. ${computerChoice[0].toUpperCase() + computerChoice.slice(1)} beats ${humanChoice}.`); break;
+        case "draw": return "It's a draw. You both picked " + humanChoice + ". ";
+        case "human": return `You win! ${humanChoice[0].toUpperCase() + humanChoice.slice(1)} beats ${computerChoice}. `; 
+        case "computer": return `You lose. ${computerChoice[0].toUpperCase() + computerChoice.slice(1)} beats ${humanChoice}. `;
     }
 }
 
-function playGame () {
-    let humanScore = 0;
-    let computerScore = 0;
+let humanScore = 0;
+let computerScore = 0;
 
-    function playRound (humanChoice, computerChoice) {
-        let winner = determineWinner(humanChoice, computerChoice);
-        printRoundResult(winner, humanChoice, computerChoice);
-        if (winner == "human") humanScore++;
-        if (winner == "computer") computerScore++;
+document.querySelector("#rps-buttons").addEventListener("click", e => {
+    let roundResults = document.querySelector("#round-result");
+    let humanChoice = e.target.getAttribute("id");
+    let computerChoice = getComputerChoice();
+
+    let winner = determineWinner(humanChoice, computerChoice);
+    if (winner == "human") humanScore++;
+    if (winner == "computer") computerScore++;
+
+    roundResults.textContent = printRoundResult(winner, humanChoice, computerChoice);
+    roundResults.textContent += "The score is " + humanScore + " for you and " + computerScore + " for computer.";
+
+    if (humanScore >= 5 || computerScore >= 5) {
+        let gameResults = document.querySelector("#game-result");
+        gameResults.textContent = humanScore >= computerScore ? "You win the game!" : "Computer wins the game."
     }
-
-    for(let i = 1; i <= 5; i++) playRound(getHumanChoice(), getComputerChoice());
-
-    let scoreMessage = "";
-    if (humanScore > computerScore) scoreMessage += "You win!";
-    else if (computerScore > humanScore) scoreMessage += "You lose.";
-    else scoreMessage += "It's a draw."
-    scoreMessage += ` Your score: ${humanScore}. Computer's score: ${computerScore}.`;
-    console.log(scoreMessage);
-}
-
-playGame();
+});
